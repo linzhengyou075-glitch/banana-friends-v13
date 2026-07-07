@@ -5,102 +5,102 @@ const titleNames = [
   "新芽",
   "萌芽者",
   "初心者",
-  "蕉友入門",
-  "微光旅人",
-  "晨光蕉友",
+  "新朋友",
   "活力新星",
-  "簽到學徒",
-  "香蕉守護",
-  "青銅蕉士",
-  "白銀蕉友",
-  "閃耀新星",
-  "活躍玩家",
-  "香蕉騎士",
-  "歡樂使者",
-  "蕉圈探險家",
-  "社群旅者",
-  "金色學徒",
-  "蕉友勇者",
-  "白銀守護",
-  "黃金香蕉",
-  "金光旅人",
-  "人氣蕉友",
-  "互動高手",
-  "金蕉騎士",
-  "閃耀冒險家",
-  "社群菁英",
-  "黃金守護者",
-  "光輝蕉士",
-  "金色傳說",
-  "彩虹蕉友",
+  "香蕉夥伴",
+  "歡樂旅人",
+  "聊天高手",
+  "暖心使者",
+  "人氣新秀",
   "彩虹旅人",
-  "虹光使者",
-  "七彩冒險家",
-  "彩虹守護",
-  "光譜騎士",
-  "虹翼玩家",
-  "夢幻蕉友",
-  "彩虹王者",
-  "永恆彩虹至尊",
-  "傳奇蕉友",
-  "傳奇旅人",
-  "榮耀使者",
-  "蕉界大師",
-  "星耀傳奇",
-  "金冠守護",
-  "王者蕉友",
+  "彩虹好友",
+  "彩虹使者",
+  "彩虹精靈",
+  "彩虹守護者",
+  "星光達人",
+  "活躍達人",
+  "榮耀之星",
+  "榮耀勇者",
   "榮耀騎士",
-  "傳說新星",
-  "香蕉傳奇",
-  "星辰蕉友",
-  "星河旅人",
-  "星光使者",
-  "銀河冒險家",
-  "星辰守護",
-  "月光騎士",
-  "星翼玩家",
-  "宇宙蕉友",
-  "銀河王者",
-  "星辰傳說",
-  "神話蕉友",
-  "烈焰旅人",
-  "火光使者",
-  "神話冒險家",
-  "烈焰守護",
-  "鳳凰騎士",
-  "神翼玩家",
-  "不滅蕉友",
-  "神話王者",
-  "烈焰傳說",
-  "至尊蕉友",
-  "雷光旅人",
-  "閃電使者",
-  "至尊冒險家",
-  "雷霆守護",
-  "天翼騎士",
-  "至尊玩家",
-  "極光蕉友",
-  "雷霆王者",
-  "至尊傳說",
-  "永恆蕉友",
-  "極光旅人",
-  "永恆使者",
+  "白金菁英",
+  "鑽石菁英",
+  "星耀菁英",
+  "榮耀領主",
+  "彩虹領主",
+  "彩虹公爵",
+  "彩虹君王",
+  "彩虹霸主",
+  "永恆之星",
+  "永恆守護者",
+  "永恆彩虹",
+  "永恆璀璨",
+  "永恆璀璨彩虹",
+  "永恆聖翼",
+  "永恆不滅",
+  "永恆璀璨彩虹不滅",
   "彩虹神話",
-  "永恆守護",
+  "彩虹創世者",
+  "彩虹至高神",
+  "永恆璀璨彩虹不滅創世神",
+  "蕉界傳奇",
+  "星河旅者",
+  "星辰守望",
+  "光耀使徒",
+  "銀河領航",
+  "榮耀聖者",
+  "夢境編織者",
+  "水晶賢者",
+  "星空守護神",
+  "傳說蕉王",
+  "神話新星",
+  "神話旅人",
+  "神話使者",
+  "神話守護者",
+  "神話騎士",
+  "神話領主",
+  "神話君王",
+  "神話霸主",
+  "神話帝王",
+  "神話至尊",
+  "烈焰之星",
+  "烈焰旅者",
+  "烈焰使者",
+  "烈焰守護者",
+  "烈焰騎士",
+  "烈焰領主",
+  "烈焰君王",
+  "烈焰霸主",
+  "烈焰帝王",
+  "不滅烈焰",
+  "雷霆之星",
+  "雷霆旅者",
+  "雷霆使者",
+  "雷霆守護者",
+  "雷霆騎士",
+  "雷霆領主",
+  "雷霆君王",
+  "雷霆霸主",
+  "雷霆帝王",
+  "至尊雷霆",
+  "極光之星",
+  "極光旅者",
+  "極光使者",
+  "極光守護者",
+  "極光騎士",
+  "極光領主",
+  "極光君王",
+  "極光霸主",
+  "極光帝王",
+  "永恆極光",
+  "時空之星",
+  "時空旅者",
+  "時空使者",
+  "時空守護者",
   "時空騎士",
-  "永恆玩家",
-  "不朽蕉友",
-  "彩虹帝王",
-  "永恆傳說",
-  "Ultimate I",
-  "Ultimate II",
-  "Ultimate III",
-  "Ultimate IV",
-  "Ultimate V",
-  "Ultimate VI",
-  "Ultimate VII",
-  "Ultimate VIII",
-  "Ultimate IX",
+  "時空領主",
+  "時空君王",
+  "時空霸主",
+  "時空帝王",
   "Banana Ultimate"
 ];
 
@@ -115,12 +115,24 @@ function totalExpForLevel(level) {
 }
 
 function titleByLevel(level) {
-  const idx = Math.max(1, Math.min(100, level)) - 1;
+  const idx = Math.max(1, Math.min(100, Number(level) || 1)) - 1;
   return titleNames[idx] || `Lv.${level} 傳奇蕉友`;
 }
 
 function badgeIdByLevel(level) {
-  return `lv${String(Math.max(1, Math.min(999, level))).padStart(3, "0")}`;
+  return `lv${String(Math.max(1, Math.min(999, Number(level) || 1))).padStart(3, "0")}`;
+}
+
+function titleIdByLevel(level) {
+  return `title_${String(Math.max(1, Math.min(100, Number(level) || 1))).padStart(3, "0")}`;
+}
+
+function rarityByLevel(level) {
+  if (level >= 91) return "神話";
+  if (level >= 71) return "傳說";
+  if (level >= 51) return "史詩";
+  if (level >= 31) return "稀有";
+  return "普通";
 }
 
 function progress(user) {
@@ -134,19 +146,21 @@ async function seedLevelAssets() {
   const baseUrl = process.env.BASE_URL || "https://banana-friends-v13.onrender.com";
 
   for (let level = 1; level <= 100; level++) {
-    const titleId = `title_${String(level).padStart(3, "0")}`;
+    const titleId = titleIdByLevel(level);
     const badgeId = badgeIdByLevel(level);
+    const name = titleByLevel(level);
 
     await Title.updateOne(
       { titleId },
       {
         titleId,
-        name: titleByLevel(level),
+        name,
         level,
-        rarity: level >= 91 ? "神話" : level >= 71 ? "傳說" : level >= 41 ? "史詩" : level >= 21 ? "稀有" : "普通",
+        rarity: rarityByLevel(level),
         color: level >= 81 ? "#b983ff" : level >= 41 ? "#ff8c42" : "#d18a00",
         image: `${baseUrl}/titles/${titleId}.png`,
-        description: `Lv.${level} 解鎖稱號`
+        description: `Lv.${level} 解鎖稱號：${name}`,
+        enabled: true
       },
       { upsert: true }
     );
@@ -155,15 +169,35 @@ async function seedLevelAssets() {
       { badgeId },
       {
         badgeId,
-        name: `Lv.${level} ${titleByLevel(level)}徽章`,
+        name: `Lv.${level} ${name}徽章`,
         level,
         image: `${baseUrl}/badges/${badgeId}.png`,
-        rarity: level >= 91 ? "神話" : level >= 71 ? "傳說" : level >= 41 ? "史詩" : level >= 21 ? "稀有" : "普通",
-        description: `Lv.${level} 自動解鎖`
+        rarity: rarityByLevel(level),
+        description: `Lv.${level} 自動解鎖：${name}`,
+        enabled: true
       },
       { upsert: true }
     );
   }
+}
+
+function syncLevelReward(user) {
+  const level = Number(user.level || 1);
+  user.title = titleByLevel(level);
+  user.titleId = titleIdByLevel(level);
+  user.badge = badgeIdByLevel(level);
+
+  if (!Array.isArray(user.titles)) user.titles = [];
+  if (!Array.isArray(user.badges)) user.badges = [];
+
+  for (let i = 1; i <= Math.min(100, level); i++) {
+    const tid = titleIdByLevel(i);
+    const bid = badgeIdByLevel(i);
+    if (!user.titles.includes(tid)) user.titles.push(tid);
+    if (!user.badges.includes(bid)) user.badges.push(bid);
+  }
+
+  return user;
 }
 
 function addExp(user, amount) {
@@ -174,23 +208,36 @@ function addExp(user, amount) {
   while (user.level < 999 && user.exp >= needExp(user.level)) {
     user.exp -= needExp(user.level);
     user.level++;
-    user.title = titleByLevel(user.level);
-    user.titleId = `title_${String(Math.min(100, user.level)).padStart(3, "0")}`;
-    user.badge = badgeIdByLevel(user.level);
-    if (!user.titles.includes(user.titleId)) user.titles.push(user.titleId);
-    if (!user.badges.includes(user.badge)) user.badges.push(user.badge);
   }
 
+  syncLevelReward(user);
   return user;
+}
+
+function nextTitleInfo(user) {
+  const level = Number(user.level || 1);
+  const next = Math.min(100, level + 1);
+  return {
+    currentLevel: level,
+    currentTitle: titleByLevel(level),
+    nextLevel: next,
+    nextTitle: titleByLevel(next),
+    needExp: needExp(level),
+    currentExp: user.exp || 0
+  };
 }
 
 module.exports = {
   needExp,
   totalExpForLevel,
   titleByLevel,
+  titleIdByLevel,
   badgeIdByLevel,
+  rarityByLevel,
   progress,
   addExp,
+  syncLevelReward,
   seedLevelAssets,
+  nextTitleInfo,
   titleNames
 };

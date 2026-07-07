@@ -11,7 +11,7 @@ const { listShop, buyItem } = require("./shop");
 const { draw, drawTen } = require("./lottery");
 const { seedLevelAssets } = require("./level");
 const { seedAppearanceAssets } = require("./assets");
-const { listUserTitles, equipTitle } = require("./title");
+const { listUserTitles, equipTitle, titleBook, nextTitleText } = require("./title");
 const { listFrames, listBackgrounds, equipFrame, equipBackground } = require("./appearance");
 const {
   levelTop,
@@ -118,6 +118,12 @@ async function handle(event) {
     case "背包":
       return reply(event.replyToken, `🎒 我的背包\n\n🎟️ 抽獎券：${user.ticket}\n🎖️ 稱號：${user.title || "新手蕉友"}\n🖼️ 頭像框：${user.frame}\n🌈 背景：${user.background}\n🎁 道具：${(user.backpack && user.backpack.length) ? user.backpack.join("、") : "目前沒有道具"}`);
 
+    case "下一級稱號":
+      return reply(event.replyToken, nextTitleText(user));
+
+    case "稱號表":
+      return reply(event.replyToken, titleBook(1));
+
     case "稱號":
     case "我的稱號": {
       const titles = await listUserTitles(user);
@@ -209,6 +215,12 @@ async function handle(event) {
     }
 
     default:
+      
+      if (text.startsWith("稱號表 ")) {
+        const page = text.replace("稱號表 ", "").trim();
+        return reply(event.replyToken, titleBook(page));
+      }
+
       if (text.startsWith("購買 ")) {
         const itemName = text.replace("購買 ", "").trim();
         const result = await buyItem(user, itemName);
