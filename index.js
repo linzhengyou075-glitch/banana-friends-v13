@@ -16,7 +16,7 @@ app.use(express.static("public"));
 app.use("/admin", require("./routes/admin"));
 
 app.get("/", (req, res) => {
-  res.send("🍌 Banana Friends Ultimate V15");
+  res.send("🍌 Banana Friends Ultimate V17");
 });
 
 const PORT = process.env.PORT || 3000;

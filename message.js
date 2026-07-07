@@ -9,8 +9,8 @@ const { saveLog } = require("./chatLog");
 const { getSetting } = require("./settings");
 const { addTaskProgress, listUserTasks, claimTask, taskListText, seedTasks } = require("./tasks");
 const { checkAchievements, listUserAchievements, claimAchievement, achievementText, seedAchievements } = require("./achievements");
-const { listShop, buyItem } = require("./shop");
-const { draw, drawTen } = require("./lottery");
+const { listShop, buyItem, ensureDefaultShop } = require("./shop");
+const { draw, drawTen, ensureDefaultPrizes } = require("./lottery");
 const { seedLevelAssets } = require("./level");
 const { seedAppearanceAssets } = require("./assets");
 const { listUserTitles, equipTitle, titleBook, nextTitleText } = require("./title");
@@ -33,6 +33,8 @@ async function ensureSeeded() {
   await seedAppearanceAssets();
   await seedTasks();
   await seedAchievements();
+  await ensureDefaultShop();
+  await ensureDefaultPrizes();
 }
 
 function baseUrlFromEvent() {
@@ -84,7 +86,7 @@ async function handle(event) {
 
   const text = event.message.text.trim();
 
-  const noRewardCommands = ["簽到", "幫助", "指令", "教學", "我的資料", "等級", "名片", "排行榜", "公告", "群規", "後台", "選單", "主選單", "快捷鍵", "稱號", "我的稱號", "頭像框", "背景"];
+  const noRewardCommands = ["簽到", "幫助", "指令", "教學", "我的資料", "我的等級", "等級", "名片", "排行榜", "公告", "群規", "後台", "選單", "主選單", "快捷鍵", "稱號", "我的稱號", "頭像框", "背景", "每日任務", "我的任務", "每週任務", "成就", "我的成就", "商店", "抽獎", "十連抽", "下一級稱號", "稱號表"];
   if (!noRewardCommands.includes(text) && !text.startsWith("購買 ") && !text.startsWith("裝備稱號 ") && !text.startsWith("裝備頭像框 ") && !text.startsWith("裝備背景 ")) {
     const r = await reward(user, "text", text);
     await saveLog(user, "text", text, r.exp, r.banana);
@@ -122,6 +124,7 @@ async function handle(event) {
     }
 
     case "我的資料":
+    case "我的等級":
     case "我的香蕉幣":
     case "香蕉幣":
     case "會員":
@@ -270,6 +273,8 @@ async function handle(event) {
       if (text.startsWith("購買 ")) {
         const itemName = text.replace("購買 ", "").trim();
         const result = await buyItem(user, itemName);
+        await addTaskProgress(user, "buy", 1);
+        await checkAchievements(user);
         return reply(event.replyToken, result.message);
       }
 
