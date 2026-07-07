@@ -7,6 +7,8 @@ const { helpText } = require("./help");
 const { reward } = require("./chatReward");
 const { saveLog } = require("./chatLog");
 const { getSetting } = require("./settings");
+const { addTaskProgress, listUserTasks, claimTask, taskListText, seedTasks } = require("./tasks");
+const { checkAchievements, listUserAchievements, claimAchievement, achievementText, seedAchievements } = require("./achievements");
 const { listShop, buyItem } = require("./shop");
 const { draw, drawTen } = require("./lottery");
 const { seedLevelAssets } = require("./level");
@@ -29,6 +31,8 @@ async function ensureSeeded() {
   seeded = true;
   await seedLevelAssets();
   await seedAppearanceAssets();
+  await seedTasks();
+  await seedAchievements();
 }
 
 function baseUrlFromEvent() {
@@ -62,6 +66,8 @@ async function handle(event) {
     const r = await reward(user, "sticker", "sticker");
     await user.save();
     await saveLog(user, "sticker", "sticker", r.exp, r.banana);
+    await addTaskProgress(user, "sticker", 1);
+    await checkAchievements(user);
     return;
   }
 
@@ -69,6 +75,8 @@ async function handle(event) {
     const r = await reward(user, "image", "image");
     await user.save();
     await saveLog(user, "image", "image", r.exp, r.banana);
+    await addTaskProgress(user, "image", 1);
+    await checkAchievements(user);
     return;
   }
 
@@ -80,6 +88,9 @@ async function handle(event) {
   if (!noRewardCommands.includes(text) && !text.startsWith("購買 ") && !text.startsWith("裝備稱號 ") && !text.startsWith("裝備頭像框 ") && !text.startsWith("裝備背景 ")) {
     const r = await reward(user, "text", text);
     await saveLog(user, "text", text, r.exp, r.banana);
+    user.totalChat = (user.totalChat || 0) + 1;
+    await addTaskProgress(user, "chat", 1);
+    await checkAchievements(user);
     await user.save();
   }
 
@@ -102,6 +113,10 @@ async function handle(event) {
 
     case "簽到": {
       const result = await sign(user);
+      if (result.ok) {
+        await addTaskProgress(user, "sign", 1);
+        await checkAchievements(user);
+      }
       await user.save();
       return reply(event.replyToken, result.message);
     }
@@ -147,6 +162,24 @@ async function handle(event) {
         ? `🌈 我的背景\n\n${bgs.map(b => `・${b.name}（${b.rarity}）\n裝備：裝備背景 ${b.name}`).join("\n\n")}`
         : "你目前沒有背景。";
       return reply(event.replyToken, msg);
+    }
+
+    
+    case "每日任務":
+    case "我的任務": {
+      const rows = await listUserTasks(user, "daily");
+      return reply(event.replyToken, taskListText(rows, "📅 每日任務"));
+    }
+
+    case "每週任務": {
+      const rows = await listUserTasks(user, "weekly");
+      return reply(event.replyToken, taskListText(rows, "🗓️ 每週任務"));
+    }
+
+    case "成就":
+    case "我的成就": {
+      const rows = await listUserAchievements(user);
+      return reply(event.replyToken, achievementText(rows));
     }
 
     case "公告": {
@@ -216,6 +249,19 @@ async function handle(event) {
 
     default:
       
+      
+      if (text.startsWith("領取任務 ")) {
+        const name = text.replace("領取任務 ", "").trim();
+        const result = await claimTask(user, name);
+        return reply(event.replyToken, result.message);
+      }
+
+      if (text.startsWith("領取成就 ")) {
+        const name = text.replace("領取成就 ", "").trim();
+        const result = await claimAchievement(user, name);
+        return reply(event.replyToken, result.message);
+      }
+
       if (text.startsWith("稱號表 ")) {
         const page = text.replace("稱號表 ", "").trim();
         return reply(event.replyToken, titleBook(page));
