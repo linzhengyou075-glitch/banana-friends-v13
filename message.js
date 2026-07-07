@@ -1,13 +1,18 @@
 const reply = require("./reply");
-const { getUser } = require("./member");
+const { getUser, fetchLineProfile } = require("./member");
 const { sign } = require("./sign");
 const { profileCard, adminCard } = require("./flex");
+const { quickMenuCard } = require("./menu");
 const { helpText } = require("./help");
 const { reward } = require("./chatReward");
 const { saveLog } = require("./chatLog");
 const { getSetting } = require("./settings");
 const { listShop, buyItem } = require("./shop");
 const { draw, drawTen } = require("./lottery");
+const { seedLevelAssets } = require("./level");
+const { seedAppearanceAssets } = require("./assets");
+const { listUserTitles, equipTitle } = require("./title");
+const { listFrames, listBackgrounds, equipFrame, equipBackground } = require("./appearance");
 const {
   levelTop,
   bananaTop,
@@ -17,6 +22,14 @@ const {
   stickerTop,
   imageTop
 } = require("./rank");
+
+let seeded = false;
+async function ensureSeeded() {
+  if (seeded) return;
+  seeded = true;
+  await seedLevelAssets();
+  await seedAppearanceAssets();
+}
 
 function baseUrlFromEvent() {
   return process.env.BASE_URL || "https://banana-friends-v13.onrender.com";
@@ -32,6 +45,8 @@ function rankingText(title, users, lineFn) {
 }
 
 async function handle(event) {
+  await ensureSeeded();
+
   if (event.type === "join") {
     const welcome = await getSetting("welcome", "👋 歡迎加入 🍌〔蕉〕個朋友吧！");
     return reply(event.replyToken, welcome);
@@ -40,7 +55,8 @@ async function handle(event) {
   if (event.type !== "message") return;
 
   const userId = event.source.userId || event.source.groupId || "unknown";
-  const user = await getUser(userId);
+  const profile = await fetchLineProfile(event);
+  const user = await getUser(userId, "", profile);
 
   if (event.message.type === "sticker") {
     const r = await reward(user, "sticker", "sticker");
@@ -60,8 +76,8 @@ async function handle(event) {
 
   const text = event.message.text.trim();
 
-  const noRewardCommands = ["簽到", "幫助", "指令", "教學", "我的資料", "等級", "名片", "排行榜", "公告", "群規", "後台"];
-  if (!noRewardCommands.includes(text) && !text.startsWith("購買 ")) {
+  const noRewardCommands = ["簽到", "幫助", "指令", "教學", "我的資料", "等級", "名片", "排行榜", "公告", "群規", "後台", "選單", "主選單", "快捷鍵", "稱號", "我的稱號", "頭像框", "背景"];
+  if (!noRewardCommands.includes(text) && !text.startsWith("購買 ") && !text.startsWith("裝備稱號 ") && !text.startsWith("裝備頭像框 ") && !text.startsWith("裝備背景 ")) {
     const r = await reward(user, "text", text);
     await saveLog(user, "text", text, r.exp, r.banana);
     await user.save();
@@ -72,6 +88,12 @@ async function handle(event) {
     case "幫助":
     case "教學":
       return reply(event.replyToken, helpText());
+
+    case "選單":
+    case "主選單":
+    case "快捷鍵":
+    case "功能":
+      return reply(event.replyToken, quickMenuCard());
 
     case "後台":
     case "管理":
@@ -85,10 +107,41 @@ async function handle(event) {
     }
 
     case "我的資料":
+    case "我的香蕉幣":
+    case "香蕉幣":
     case "會員":
     case "等級":
     case "名片":
+    case "展示我的名片":
       return reply(event.replyToken, profileCard(user));
+
+    case "背包":
+      return reply(event.replyToken, `🎒 我的背包\n\n🎟️ 抽獎券：${user.ticket}\n🎖️ 稱號：${user.title || "新手蕉友"}\n🖼️ 頭像框：${user.frame}\n🌈 背景：${user.background}\n🎁 道具：${(user.backpack && user.backpack.length) ? user.backpack.join("、") : "目前沒有道具"}`);
+
+    case "稱號":
+    case "我的稱號": {
+      const titles = await listUserTitles(user);
+      const msg = titles.length
+        ? `🎖️ 我的稱號\n\n${titles.map(t => `・${t.name}（${t.rarity}）\n裝備：裝備稱號 ${t.name}`).join("\n\n")}`
+        : "你目前沒有稱號。";
+      return reply(event.replyToken, msg);
+    }
+
+    case "頭像框": {
+      const frames = await listFrames(user);
+      const msg = frames.length
+        ? `🖼️ 我的頭像框\n\n${frames.map(f => `・${f.name}（${f.rarity}）\n裝備：裝備頭像框 ${f.name}`).join("\n\n")}`
+        : "你目前沒有頭像框。";
+      return reply(event.replyToken, msg);
+    }
+
+    case "背景": {
+      const bgs = await listBackgrounds(user);
+      const msg = bgs.length
+        ? `🌈 我的背景\n\n${bgs.map(b => `・${b.name}（${b.rarity}）\n裝備：裝備背景 ${b.name}`).join("\n\n")}`
+        : "你目前沒有背景。";
+      return reply(event.replyToken, msg);
+    }
 
     case "公告": {
       const announcement = await getSetting("announcement", "目前沒有公告");
@@ -103,7 +156,7 @@ async function handle(event) {
     case "排行榜":
     case "等級排行": {
       const users = await levelTop(10);
-      return reply(event.replyToken, rankingText("🏆 等級排行榜", users, u => `Lv.${u.level}｜EXP ${u.exp}`));
+      return reply(event.replyToken, rankingText("🏆 等級排行榜", users, u => `Lv.${u.level}｜${u.title || "新手蕉友"}`));
     }
 
     case "香蕉幣排行": {
@@ -161,6 +214,25 @@ async function handle(event) {
         const result = await buyItem(user, itemName);
         return reply(event.replyToken, result.message);
       }
+
+      if (text.startsWith("裝備稱號 ")) {
+        const name = text.replace("裝備稱號 ", "").trim();
+        const result = await equipTitle(user, name);
+        return reply(event.replyToken, result.message);
+      }
+
+      if (text.startsWith("裝備頭像框 ")) {
+        const name = text.replace("裝備頭像框 ", "").trim();
+        const result = await equipFrame(user, name);
+        return reply(event.replyToken, result.message);
+      }
+
+      if (text.startsWith("裝備背景 ")) {
+        const name = text.replace("裝備背景 ", "").trim();
+        const result = await equipBackground(user, name);
+        return reply(event.replyToken, result.message);
+      }
+
       return;
   }
 }

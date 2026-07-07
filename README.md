@@ -1,37 +1,34 @@
-# Banana Friends V15 Ready
+# Banana Friends V16.2 Player Showcase
 
-Render:
-- Build Command: `npm install`
-- Start Command: `node index.js`
+V16.2 以 V16.1 為基底，完成高質感玩家展示系統。
 
-Environment Variables:
-- CHANNEL_ACCESS_TOKEN
-- CHANNEL_SECRET
-- MONGODB_URI
-- BASE_URL=https://banana-friends-v13.onrender.com
-- ADMIN_PASSWORD=banana123
+## 本版完成
 
-LINE Webhook:
-- https://banana-friends-v13.onrender.com/webhook
+- 100 個等級徽章重新製作
+  - `public/badges/lv001.png` ～ `lv100.png`
+  - 金框、立體、稱號、等級文字
+- 100 個稱號橫幅
+  - `public/titles/title_001.png` ～ `title_100.png`
+- 頭像框重新美化
+- 名片 Flex 會顯示：
+  - LINE 大頭照
+  - 頭像框
+  - 等級徽章
+  - 稱號橫幅
+  - 背景卡
+  - EXP 進度條
+- 後台外觀頁可查看資源路徑
 
-Admin:
-- https://banana-friends-v13.onrender.com/admin
+## 測試指令
 
-LINE Commands:
-- 幫助
-- 簽到
+- 名片
 - 我的資料
-- 公告
-- 群規
-- 後台
-- 排行榜
-- 香蕉幣排行
-- 簽到排行
-- 本日聊天排行
-- 昨日聊天排行
-- 貼圖排行
-- 圖片排行
-- 商店
-- 購買 抽獎券
-- 抽獎
-- 十連抽
+- 我的稱號
+- 頭像框
+- 背景
+- 選單
+
+## 後台
+
+- /admin
+- /admin/appearance
