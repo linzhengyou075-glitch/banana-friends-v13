@@ -1,3 +1,4 @@
+const { helpText } = require("./help");
 const reply = require("./reply");
 const { getUser } = require("./member");
 const { sign } = require("./sign");
@@ -14,6 +15,10 @@ async function handle(event) {
   const user = await getUser(userId);
 
   switch (text) {
+    case "指令":
+case "幫助":
+case "教學":
+    return reply(event.replyToken, helpText());
 
     case "簽到": {
       const result = sign(user);
