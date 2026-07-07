@@ -16,18 +16,11 @@ app.use(express.static("public"));
 app.use("/admin", require("./routes/admin"));
 
 app.get("/", (req, res) => {
-  res.send(`
-    <html><head><meta charset="utf-8"><title>Banana Friends</title></head>
-    <body style="font-family:Arial,'Noto Sans TC',sans-serif;padding:24px;">
-      <h1>🍌 Banana Friends Ultimate V14</h1>
-      <p>✅ Server Running</p>
-      <p><a href="/admin">進入後台</a></p>
-    </body></html>
-  `);
+  res.send("🍌 Banana Friends Ultimate V15");
 });
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Server Running:" + PORT);
+  console.log("Server Running：" + PORT);
 });
