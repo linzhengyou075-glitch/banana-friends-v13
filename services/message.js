@@ -1,3 +1,4 @@
+const { saveLog } = require("./chatLog");
 const { levelTop, bananaTop, signTop } = require("./rank");
 const { reward } = require("./chatReward");
 const { helpText } = require("./help");
@@ -17,7 +18,6 @@ async function handle(event) {
   const user = await getUser(userId);
   reward(user);
 await user.save();
-
   switch (text) {
     case "指令":
 case "幫助":
@@ -25,8 +25,17 @@ case "教學":
     return reply(event.replyToken, helpText());
 
     case "簽到": {
-      const result = sign(user);
-      await user.save();
+      reward(user);
+
+await user.save();
+
+await saveLog(
+    user,
+    "text",
+    text,
+    2,
+    2
+);
       return reply(event.replyToken, result.message);
     }
 
