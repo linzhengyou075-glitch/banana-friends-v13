@@ -1,8 +1,25 @@
-function adminIds() {
-  return (process.env.ADMIN_USER_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
-}
+const admins = [];
+
 function isAdmin(userId) {
-  const ids = adminIds();
-  return ids.length > 0 && ids.includes(userId);
+  return admins.includes(userId);
 }
-module.exports = { isAdmin };
+
+function addAdmin(userId) {
+  if (!admins.includes(userId)) {
+    admins.push(userId);
+  }
+}
+
+function removeAdmin(userId) {
+  const index = admins.indexOf(userId);
+
+  if (index !== -1) {
+    admins.splice(index, 1);
+  }
+}
+
+module.exports = {
+  isAdmin,
+  addAdmin,
+  removeAdmin
+};
