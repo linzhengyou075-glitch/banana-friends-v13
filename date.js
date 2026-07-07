@@ -1,7 +1,8 @@
-function todayKey() {
-  return new Date().toLocaleDateString("zh-TW", {
-    timeZone: "Asia/Taipei"
-  });
+function dateKey(date = new Date()) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(date);
 }
-
-module.exports = { todayKey };
+function yesterdayKey() {
+  const d = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  return dateKey(d);
+}
+module.exports = { dateKey, yesterdayKey };

@@ -1,48 +1,24 @@
-const { addExp } = require("./level");
-const { addBanana } = require("./economy");
+const { addExp } = require('./level');
+const { addBanana } = require('./economy');
+const { allSettings } = require('./settings');
 
-function reward(user, messageType = "text") {
-  const maxExp = 300;
-  const maxBanana = 300;
+async function reward(user, type = 'text') {
+  const settings = await allSettings();
   let exp = 0;
   let banana = 0;
-
-  if (messageType === "text") {
-    exp = 2;
-    banana = 2;
-    user.totalChat += 1;
-    user.todayChat += 1;
+  if (type === 'text') {
+    const expLeft = Math.max(0, Number(settings.dailyExpLimit) - (user.todayExp || 0));
+    const bananaLeft = Math.max(0, Number(settings.dailyBananaLimit) - (user.todayBanana || 0));
+    exp = Math.min(Number(settings.chatExp), expLeft);
+    banana = Math.min(Number(settings.chatBanana), bananaLeft);
+    if (exp > 0) addExp(user, exp);
+    if (banana > 0) addBanana(user, banana);
+    user.todayExp = (user.todayExp || 0) + exp;
+    user.todayBanana = (user.todayBanana || 0) + banana;
+    user.todayMessages = (user.todayMessages || 0) + 1;
   }
-
-  if (messageType === "sticker") {
-    exp = 1;
-    banana = 1;
-    user.stickerCount += 1;
-  }
-
-  if (messageType === "image") {
-    exp = 1;
-    banana = 1;
-    user.imageCount += 1;
-  }
-
-  if (user.todayExp >= maxExp) exp = 0;
-  if (user.todayBanana >= maxBanana) banana = 0;
-
-  exp = Math.max(0, Math.min(exp, maxExp - user.todayExp));
-  banana = Math.max(0, Math.min(banana, maxBanana - user.todayBanana));
-
-  if (exp > 0) {
-    addExp(user, exp);
-    user.todayExp += exp;
-  }
-
-  if (banana > 0) {
-    addBanana(user, banana);
-    user.todayBanana += banana;
-  }
-
+  if (type === 'sticker') user.stickerCount = (user.stickerCount || 0) + 1;
+  if (type === 'image') user.imageCount = (user.imageCount || 0) + 1;
   return { exp, banana };
 }
-
 module.exports = { reward };
