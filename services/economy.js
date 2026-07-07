@@ -1,29 +1,26 @@
-function addBanana(user,amount){
+function addBanana(user, amount) {
 
-    user.banana+=amount;
+  user.banana += amount;
 
-    return user;
+  if (user.banana < 0) {
+    user.banana = 0;
+  }
 
+  return user.banana;
 }
 
-function useBanana(user,amount){
+function spendBanana(user, amount) {
 
-    if(user.banana<amount){
+  if (user.banana < amount) {
+    return false;
+  }
 
-        return false;
+  user.banana -= amount;
 
-    }
-
-    user.banana-=amount;
-
-    return true;
-
+  return true;
 }
 
-module.exports={
-
-    addBanana,
-
-    useBanana
-
-}
+module.exports = {
+  addBanana,
+  spendBanana
+};
