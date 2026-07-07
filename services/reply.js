@@ -1,22 +1,19 @@
-const User = require("../models/User");
+const line = require("@line/bot-sdk");
+const config = require("../config/line");
 
-async function getUser(userId, displayName = "") {
+const client = new line.Client(config);
 
-  let user = await User.findOne({ userId });
+async function reply(replyToken, message) {
+  if (!replyToken) return;
 
-  if (!user) {
-
-    user = await User.create({
-      userId,
-      displayName
+  if (typeof message === "string") {
+    return client.replyMessage(replyToken, {
+      type: "text",
+      text: message
     });
-
   }
 
-  return user;
-
+  return client.replyMessage(replyToken, message);
 }
 
-module.exports = {
-  getUser
-};
+module.exports = reply;
