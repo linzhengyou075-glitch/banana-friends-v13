@@ -1,3 +1,4 @@
+const { reward } = require("./chatReward");
 const { helpText } = require("./help");
 const reply = require("./reply");
 const { getUser } = require("./member");
@@ -13,6 +14,8 @@ async function handle(event) {
   const userId = event.source.userId;
 
   const user = await getUser(userId);
+  reward(user);
+await user.save();
 
   switch (text) {
     case "指令":
