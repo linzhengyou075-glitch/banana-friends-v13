@@ -1,7 +1,9 @@
+const connectDB = require("./config/mongodb");
 const express = require("express");
 require("dotenv").config();
 
 const app = express();
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
