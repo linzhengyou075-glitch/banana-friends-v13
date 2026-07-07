@@ -3,12 +3,13 @@ const express = require("express");
 require("dotenv").config();
 
 const app = express();
+
 connectDB();
+
+app.use("/webhook", require("./routes/webhook"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use("/webhook", require("./routes/webhook"));
 
 app.get("/", (req, res) => {
   res.send("🍌 Banana Friends Ultimate V13");
