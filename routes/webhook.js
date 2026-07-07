@@ -16,10 +16,10 @@ router.post(
         })
       );
 
-      res.sendStatus(200);
+      res.status(200).end();
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      res.status(200).end();
     }
   }
 );
