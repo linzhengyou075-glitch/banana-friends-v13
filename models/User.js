@@ -36,6 +36,10 @@ const UserSchema = new mongoose.Schema({
     type:Number,
     default:0
   },
+  lastSign:{
+  type:String,
+  default:""
+},
 
   joinDate:{
     type:Date,
