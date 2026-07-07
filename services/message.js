@@ -1,3 +1,4 @@
+const { levelTop, bananaTop, signTop } = require("./rank");
 const { reward } = require("./chatReward");
 const { helpText } = require("./help");
 const reply = require("./reply");
@@ -35,7 +36,42 @@ case "教學":
       return reply(event.replyToken, profileCard(user));
 
     case "排行榜":
-      return reply(event.replyToken, "🏆 排行榜功能下一步加入");
+case "等級排行": {
+  const users = await levelTop(10);
+
+  let msg = "🏆 等級排行榜 TOP10\n\n";
+
+  users.forEach((u, i) => {
+    msg += `${i + 1}. ${u.displayName || "蕉友"}｜Lv.${u.level}｜EXP ${u.exp}\n`;
+  });
+
+  return reply(event.replyToken, msg);
+}
+
+case "香蕉幣排行": {
+  const users = await bananaTop(10);
+
+  let msg = "🍌 香蕉幣排行榜 TOP10\n\n";
+
+  users.forEach((u, i) => {
+    msg += `${i + 1}. ${u.displayName || "蕉友"}｜${u.banana} 香蕉幣\n`;
+  });
+
+  return reply(event.replyToken, msg);
+}
+
+case "簽到排行": {
+  const users = await signTop(10);
+
+  let msg = "📅 簽到排行榜 TOP10\n\n";
+
+  users.forEach((u, i) => {
+    msg += `${i + 1}. ${u.displayName || "蕉友"}｜${u.signDays} 天\n`;
+  });
+
+  return reply(event.replyToken, msg);
+}
+    
 
     case "商店":
       return reply(event.replyToken, "🛒 商店功能下一步加入");
